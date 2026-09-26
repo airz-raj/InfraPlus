@@ -75,7 +75,34 @@ The system analyzes large datasets combining citizen feedback with national demo
    pip install -r requirements.txt
    ```
 
-*(Further steps to run frontend and the AI Engine will be added as the project scales!)*
+4. **Run the Backend API Server:**
+   ```bash
+   cd backend
+   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+   ```
+   
+   The API docs will be available at:
+   - **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
+   - **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+*(Further steps to run the frontend and the AI Engine will be added as the project scales!)*
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/v1/health` | API liveness health check |
+| `POST` | `/api/v1/feedback` | Submit feedback (audio file or text via multipart form) |
+| `POST` | `/api/v1/feedback/text` | Submit text-only feedback (JSON body) |
+| `GET` | `/api/v1/analytics/hotspots` | GeoJSON hotspot data for map rendering |
+
+### Query Parameters for `/api/v1/analytics/hotspots`
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `category` | `string` | Filter by infrastructure category (e.g. `water`, `electricity`) |
+| `min_severity` | `int (1-5)` | Minimum severity threshold for complaints |
 
 ---
 
