@@ -38,6 +38,7 @@ async def process_audio_interaction(audio_file_path: str) -> Dict[str, Any]:
     
     try:
         intent_data = json.loads(intent_json_str)
+        intent_data["raw_text"] = transcription
         return intent_data
     except json.JSONDecodeError:
         return {
@@ -46,4 +47,25 @@ async def process_audio_interaction(audio_file_path: str) -> Dict[str, Any]:
             "location": "0,0",
             "severity": 1,
             "raw_text": transcription
+        }
+
+
+async def process_text_interaction(text: str) -> Dict[str, Any]:
+    """
+    Takes plain text feedback and uses the C++ NLP binding to extract
+    a structured intent payload.  Skips the STT step entirely.
+    """
+    intent_json_str = nlp_engine.extract_intent(text)
+
+    try:
+        intent_data = json.loads(intent_json_str)
+        return intent_data
+    except json.JSONDecodeError:
+        logging.error("NLP engine returned invalid JSON for text input.")
+        return {
+            "intent": "unknown",
+            "category": "unknown",
+            "location": "0,0",
+            "severity": 1,
+            "raw_text": text
         }
