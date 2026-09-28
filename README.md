@@ -1,7 +1,7 @@
 # 🚀 InfraPulse: BRICS DPI Feedback-to-Funding Platform
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Active-brightgreen" alt="Status" />
+  <img src="https://img.shields.io/badge/Status-Complete-brightgreen" alt="Status" />
   <img src="https://img.shields.io/badge/Hackathon-Build_With_AI-blue" alt="Hackathon" />
   <img src="https://img.shields.io/badge/Theme-Innovation-purple" alt="Theme" />
 </p>
@@ -21,41 +21,25 @@ The system analyzes large datasets combining citizen feedback with national demo
 ### Frontend (Citizen & Policymaker UIs)
 - **Framework:** Next.js (App Router), React 18, TypeScript
 - **Styling:** Tailwind CSS + Shadcn UI
-- **Key Features:** Progressive Web App (PWA), Multilingual i18n support, Web Audio API, Leaflet.js/Mapbox for geospatial heatmaps.
+- **Citizen UI (`/`):** Progressive Web App (PWA), Multilingual i18n support, Web Audio API integration.
+- **Policymaker Dashboard (`/dashboard`):** Leaflet.js interactive GeoJSON maps, Recharts for predictive demand models and velocity charts.
 
 ### Backend (API & Orchestration)
 - **Framework:** FastAPI (Python 3.11+), Pydantic v2
 - **Audio Pipeline:** `ffmpeg-python` for async audio processing
-- **Analytics:** Pandas, GeoPandas, Scikit-learn
-- **Database:** PostgreSQL with PostGIS extension for spatial queries
+- **Analytics:** PostGIS geospatial querying and predictive data serving.
+- **Database:** PostgreSQL with PostGIS extension for spatial querying.
 
 ### Core AI Engine
 - **Framework:** C/C++ compiled binaries (`pybind11` / `ctypes`)
-- **Speech-to-Text:** `whisper.cpp` for native, fast inference
-- **NLP Engine:** `llama.cpp` for Intent categorization and Named Entity Recognition
+- **Speech-to-Text:** `whisper.cpp` for native, fast inference *(Architecture modeled)*
+- **NLP Engine:** `llama.cpp` for Intent categorization *(Architecture modeled)*
 
 ---
 
-## ⚙️ Monorepo Directory Layout
+## 🚀 Getting Started (Docker Compose)
 
-```text
-/infrapulse-monorepo
-├── frontend/                 # Next.js Web App
-├── backend/                  # FastAPI Python Server
-├── ai_engine/                # Native processing (C/C++)
-└── infrastructure/           # Docker, DB Init scripts
-```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Docker & Docker Compose
-- Python 3.11+
-- Node.js 18+
-
-### Development Setup
+The easiest way to spin up the entire **InfraPulse** stack is using Docker Compose. This will start the PostgreSQL/PostGIS database, the FastAPI backend, and the Next.js frontend.
 
 1. **Clone the repository:**
    ```bash
@@ -63,60 +47,25 @@ The system analyzes large datasets combining citizen feedback with national demo
    cd InfraPlus
    ```
 
-2. **Start the Database Infrastructure:**
-   Spin up the PostgreSQL database with PostGIS:
+2. **Spin up the stack:**
    ```bash
-   docker-compose up -d
+   docker-compose up --build -d
    ```
 
-3. **Install Backend Dependencies:**
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   ```
-
-4. **Run the Backend API Server:**
-   ```bash
-   cd backend
-   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-   ```
-   
-   The API docs will be available at:
-   - **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
-   - **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
-
-5. **Run the Citizen Frontend (Phase 4):**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-   Open [http://localhost:3000](http://localhost:3000). Optional: set `NEXT_PUBLIC_API_URL` (default `http://localhost:8000/api/v1`).
-
-   Citizens can send text (minimum 5 characters) or a voice note. Language options: English, Hindi, Portuguese. The newspaper control opens localized infrastructure updates.
+3. **Access the application:**
+   - **Citizen Portal (Frontend):** [http://localhost:3000](http://localhost:3000)
+   - **Policymaker Dashboard:** [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
+   - **Backend API Docs (Swagger):** [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
-## 📡 API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/v1/health` | API liveness health check |
-| `POST` | `/api/v1/feedback` | Submit feedback (audio file or text via multipart form) |
-| `POST` | `/api/v1/feedback/text` | Submit text-only feedback (JSON body) |
-| `GET` | `/api/v1/analytics/hotspots` | GeoJSON hotspot data for map rendering |
-
-### Query Parameters for `/api/v1/analytics/hotspots`
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `category` | `string` | Filter by infrastructure category (e.g. `water`, `electricity`) |
-| `min_severity` | `int (1-5)` | Minimum severity threshold for complaints |
+## ⚠️ Residual Risks & Future Work
+As a hackathon prototype, certain constraints were implemented:
+1. **C++ Native AI Bindings:** The `ai_engine` folder contains the C++ `pybind11` architecture required to interface with `whisper.cpp` and `llama.cpp` on low-resource edge servers. However, due to compilation times and hardware constraints during the hackathon, the Python pipeline (`ai_pipeline.py`) currently uses mocked fallbacks. For production, the C++ binaries must be fully compiled using the provided `CMakeLists.txt`.
+2. **Predictive Models:** The regression algorithms for the 6-month predictive forecast charts on the Policymaker Dashboard are currently serving deterministic/mocked trajectory data for the MVP. Future iterations will fully hook into Scikit-learn endpoints.
+3. **Database Migrations:** Alembic should be configured for robust database migrations in production, though SQLModel/SQLAlchemy `create_all()` suffices for this MVP.
 
 ---
-
-## 🤝 Contributing
-Contributions are always welcome as we continue to build out InfraPulse for the community. Please follow standard fork and pull-request workflows.
 
 ## 📜 License
 This project is licensed under the MIT License.

@@ -14,5 +14,31 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: infrapulse_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:password@db:5432/infrapulse
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: infrapulse_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+    depends_on:
+      - backend
+    restart: unless-stopped
+
 volumes:
   postgres_data:
