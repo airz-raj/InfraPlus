@@ -1,7 +1,8 @@
 "use client";
 
 import { FormEvent, useId, useRef, useState } from "react";
-import { Newspaper, Send } from "lucide-react";
+import { Newspaper, Send, LayoutDashboard } from "lucide-react";
+import Link from "next/link";
 
 import { AudioRecorder } from "@/components/audio/AudioRecorder";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
@@ -153,6 +154,11 @@ export function CitizenPortal() {
             </div>
             <div className="flex items-center gap-2">
               <LanguageSelector />
+              <Link href="/dashboard">
+                <Button variant="outline" size="icon" aria-label="Dashboard">
+                  <LayoutDashboard />
+                </Button>
+              </Link>
               <Button
                 type="button"
                 variant="outline"
