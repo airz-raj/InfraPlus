@@ -85,7 +85,16 @@ The system analyzes large datasets combining citizen feedback with national demo
    - **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
    - **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
-*(Further steps to run the frontend and the AI Engine will be added as the project scales!)*
+5. **Run the Citizen Frontend (Phase 4):**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000). Optional: set `NEXT_PUBLIC_API_URL` (default `http://localhost:8000/api/v1`).
+
+   Citizens can send text (minimum 5 characters) or a voice note. Language options: English, Hindi, Portuguese. The newspaper control opens localized infrastructure updates.
 
 ---
 

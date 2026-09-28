@@ -1,0 +1,18 @@
+{
+  "name": "InfraPulse",
+  "short_name": "InfraPulse",
+  "description": "Citizen voice and text reports for public infrastructure.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f7fc",
+  "theme_color": "#4f46e5",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/next.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
