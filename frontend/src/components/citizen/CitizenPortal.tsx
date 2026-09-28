@@ -128,10 +128,10 @@ export function CitizenPortal() {
   const welcomeText = `${t("welcomeTitle")}. ${t("welcomeBody")} ${t("locationHint")}`;
 
   return (
-    <div className="flex min-h-full flex-1">
+    <div className="flex min-h-full flex-1 bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-950 text-slate-50">
       <a
         href="#citizen-chat"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-blue-600 focus:px-3 focus:py-2 focus:text-white"
       >
         {t("skipToChat")}
       </a>
@@ -139,36 +139,39 @@ export function CitizenPortal() {
       {newsOpen ? (
         <button
           type="button"
-          className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden transition-all duration-300"
           aria-label={t("newsClose")}
           onClick={() => setNewsOpen(false)}
         />
       ) : null}
 
-      <div className="mx-auto flex min-h-full w-full max-w-5xl flex-1">
-        <section className="flex min-h-full min-w-0 flex-1 flex-col bg-background">
-          <header className="flex items-center justify-between gap-2 border-b border-border px-3 py-3 sm:px-4">
+      <div className="mx-auto flex min-h-full w-full max-w-5xl flex-1 relative px-0 sm:px-4 sm:py-4 md:py-8 transition-all">
+        <section className="flex min-h-full min-w-0 flex-1 flex-col bg-slate-900/60 backdrop-blur-2xl border-0 sm:border sm:border-white/10 sm:shadow-2xl sm:shadow-blue-900/50 sm:rounded-3xl overflow-hidden relative z-10">
+          <header className="flex items-center justify-between gap-2 px-5 py-4 border-b border-white/10 bg-black/20 backdrop-blur-xl">
             <div>
-              <p className="text-sm font-semibold tracking-tight">{t("appName")}</p>
-              <p className="text-xs text-muted-foreground">{t("appTagline")}</p>
+              <p className="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300 drop-shadow-md">
+                {t("appName")}
+              </p>
+              <p className="text-xs font-medium text-indigo-200/70">{t("appTagline")}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <LanguageSelector />
               <Link href="/dashboard">
-                <Button variant="outline" size="icon" aria-label="Dashboard">
-                  <LayoutDashboard />
+                <Button variant="outline" size="icon" className="bg-white/5 border-white/10 text-indigo-100 hover:bg-white/10 hover:text-white transition-all shadow-[0_0_15px_rgba(59,130,246,0.1)]" aria-label="Dashboard">
+                  <LayoutDashboard className="w-4 h-4" />
                 </Button>
               </Link>
               <Button
                 type="button"
                 variant="outline"
                 size="icon"
+                className="bg-white/5 border-white/10 text-indigo-100 hover:bg-white/10 hover:text-white transition-all"
                 aria-expanded={newsOpen}
                 aria-controls="news-panel"
                 aria-label={t("newsToggle")}
                 onClick={() => setNewsOpen((open) => !open)}
               >
-                <Newspaper />
+                <Newspaper className="w-4 h-4" />
               </Button>
             </div>
           </header>
@@ -180,7 +183,7 @@ export function CitizenPortal() {
             aria-live="polite"
             aria-relevant="additions"
             aria-label={t("chatRegion")}
-            className="flex-1 space-y-3 overflow-y-auto px-3 py-4 sm:px-4"
+            className="flex-1 space-y-4 overflow-y-auto px-4 py-6 sm:px-6"
           >
             {messages.map((message) => {
               const text = message.id === "welcome" ? welcomeText : message.text;
@@ -192,17 +195,17 @@ export function CitizenPortal() {
                 >
                   <div
                     className={cn(
-                      "max-w-[90%] rounded-2xl px-3 py-2 text-sm leading-relaxed sm:max-w-[80%]",
-                      isUser && "bg-primary text-primary-foreground",
-                      !isUser && message.kind === "error" && "bg-destructive/10 text-destructive",
-                      !isUser && message.kind === "success" && "bg-accent text-accent-foreground",
-                      !isUser && (message.kind === "info" || !message.kind) && "bg-muted text-foreground"
+                      "max-w-[90%] rounded-3xl px-5 py-3.5 text-[15px] leading-relaxed sm:max-w-[80%] shadow-lg transition-transform duration-300 hover:-translate-y-1",
+                      isUser && "bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-blue-500/25 rounded-tr-sm border border-blue-400/20",
+                      !isUser && message.kind === "error" && "bg-red-500/10 text-red-200 border border-red-500/20 rounded-tl-sm backdrop-blur-md",
+                      !isUser && message.kind === "success" && "bg-emerald-500/10 text-emerald-100 border border-emerald-500/20 rounded-tl-sm backdrop-blur-md",
+                      !isUser && (message.kind === "info" || !message.kind) && "bg-white/10 text-slate-100 border border-white/10 rounded-tl-sm backdrop-blur-md"
                     )}
                   >
-                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide opacity-70">
+                    <p className={cn("mb-1 text-[11px] font-bold uppercase tracking-wider", isUser ? "text-blue-100/70" : "text-indigo-200/70")}>
                       {isUser ? t("you") : t("assistant")}
                     </p>
-                    <p>{text}</p>
+                    <p className="font-medium tracking-tight drop-shadow-sm">{text}</p>
                   </div>
                 </article>
               );
@@ -211,37 +214,41 @@ export function CitizenPortal() {
 
           <form
             onSubmit={submitText}
-            className="border-t border-border bg-card px-3 py-3 sm:px-4"
+            className="bg-black/20 backdrop-blur-xl px-4 py-4 sm:px-6 border-t border-white/10 relative z-20"
           >
-            <label htmlFor={inputId} className="mb-1 block text-xs font-medium">
-              {t("composerLabel")}
-            </label>
-            <div className="flex items-end gap-2">
-              <textarea
-                id={inputId}
-                value={draft}
-                onChange={(event) => setDraft(event.target.value)}
-                placeholder={t("composerPlaceholder")}
-                disabled={busy}
-                rows={2}
-                aria-required="true"
-                className="min-h-16 flex-1 resize-none rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring"
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" && !event.shiftKey) {
-                    event.preventDefault();
-                    event.currentTarget.form?.requestSubmit();
-                  }
-                }}
-              />
-              <Button type="submit" size="icon" disabled={busy} aria-label={t("send")}>
-                <Send />
-              </Button>
-            </div>
-            <p className="sr-only" aria-live="polite">
-              {busy ? t("sending") : t("statusLive")}
-            </p>
-            <div className="mt-3">
-              <AudioRecorder disabled={busy} onSubmit={submitAudio} />
+            <div className="flex flex-col gap-3 max-w-4xl mx-auto">
+              <label htmlFor={inputId} className="sr-only">
+                {t("composerLabel")}
+              </label>
+              <div className="flex items-end gap-3 bg-white/5 border border-white/10 p-2 rounded-3xl focus-within:ring-2 focus-within:ring-blue-500/50 focus-within:border-blue-500/50 transition-all shadow-inner">
+                <textarea
+                  id={inputId}
+                  value={draft}
+                  onChange={(event) => setDraft(event.target.value)}
+                  placeholder={t("composerPlaceholder")}
+                  disabled={busy}
+                  rows={1}
+                  aria-required="true"
+                  className="min-h-12 flex-1 resize-none bg-transparent px-4 py-3 text-sm text-slate-100 placeholder:text-slate-400/70 outline-none"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" && !event.shiftKey) {
+                      event.preventDefault();
+                      event.currentTarget.form?.requestSubmit();
+                    }
+                  }}
+                />
+                <Button type="submit" size="icon" disabled={busy} className="rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-indigo-400 text-white shadow-[0_0_20px_rgba(59,130,246,0.4)] h-12 w-12 shrink-0 transition-transform hover:scale-105">
+                  <Send className="w-5 h-5 ml-1" />
+                </Button>
+              </div>
+              <div className="flex items-center justify-between pl-2">
+                <p className="text-xs font-medium text-slate-400/70" aria-live="polite">
+                  {busy ? t("sending") : "Ready"}
+                </p>
+                <div className="scale-95 origin-right">
+                  <AudioRecorder disabled={busy} onSubmit={submitAudio} />
+                </div>
+              </div>
             </div>
           </form>
         </section>

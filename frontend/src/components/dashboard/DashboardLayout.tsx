@@ -42,29 +42,46 @@ export default function DashboardLayout() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
-      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-blue-950">InfraPulse Dashboard</h1>
-          <p className="text-sm text-slate-500">Live AI-Driven Infrastructure Demand Analytics</p>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-500/30">
+      <div className="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay z-50"></div>
+      
+      <header className="bg-slate-950/80 backdrop-blur-2xl border-b border-white/10 px-6 py-4 flex items-center justify-between sticky top-0 z-40 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-[0_0_20px_rgba(59,130,246,0.4)] flex items-center justify-center">
+            <LayoutDashboard className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300">InfraPulse Command Center</h1>
+            <p className="text-xs font-medium text-indigo-200/60 uppercase tracking-widest mt-0.5">Live AI Analytics Engine</p>
+          </div>
         </div>
         <Link href="/">
-          <Button variant="outline" className="font-semibold shadow-sm text-slate-700">Citizen Portal</Button>
+          <Button variant="outline" className="font-bold bg-white/5 border-white/10 text-indigo-200 hover:bg-white/10 hover:text-white transition-all shadow-[0_0_15px_rgba(59,130,246,0.15)] rounded-full px-6">
+            Citizen Portal
+          </Button>
         </Link>
       </header>
 
-      <main className="flex-1 p-6 max-w-[1600px] mx-auto w-full flex flex-col gap-6">
+      <main className="flex-1 p-6 max-w-[1800px] mx-auto w-full flex flex-col gap-6 relative z-10">
         <KPIPanel geoData={geoData} loading={loading} />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col relative z-0">
-            <h2 className="text-lg font-bold mb-4 text-slate-800">Demand Hotspots & Infrastructure Projects</h2>
-            <div className="flex-1 rounded-xl overflow-hidden border border-slate-200 relative min-h-[500px] z-0">
+          <div className="lg:col-span-2 bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/5 p-6 flex flex-col relative z-0 group hover:border-white/10 transition-colors duration-500">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-3xl -z-10"></div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-slate-100 tracking-tight flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                Demand Hotspots & Infrastructure Projects
+              </h2>
+            </div>
+            <div className="flex-1 rounded-2xl overflow-hidden border border-white/10 relative min-h-[550px] shadow-[inset_0_0_30px_rgba(0,0,0,0.5)] z-0">
               {geoData && <HotspotMap data={geoData} />}
             </div>
           </div>
           
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between relative z-0">
+          <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/5 p-6 flex flex-col justify-between relative z-0 group hover:border-white/10 transition-colors duration-500">
+             <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-purple-500/5 rounded-3xl -z-10"></div>
+             <h2 className="text-xl font-bold text-slate-100 tracking-tight mb-6">Predictive AI Analysis</h2>
              <AnalyticsCharts geoData={geoData} />
           </div>
         </div>
