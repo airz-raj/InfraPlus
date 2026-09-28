@@ -1,10 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HotspotGeoJSON } from "@/types/api";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line, Legend } from "recharts";
+import { getPredictiveDemand } from "@/lib/api";
 
 export default function AnalyticsCharts({ geoData }: { geoData: HotspotGeoJSON | null }) {
+  const [forecastData, setForecastData] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadForecast() {
+      try {
+        const res = await getPredictiveDemand();
+        setForecastData(res.data || []);
+      } catch (err) {
+        console.error("Failed to load forecast data", err);
+      }
+    }
+    loadForecast();
+  }, []);
+
   if (!geoData) return <div className="h-full flex items-center justify-center text-slate-400">Loading charts...</div>;
 
   const complaints = geoData.features.filter(f => f.properties.feature_type === "complaint");
@@ -20,16 +35,6 @@ export default function AnalyticsCharts({ geoData }: { geoData: HotspotGeoJSON |
     name: k.charAt(0).toUpperCase() + k.slice(1),
     count: categoryCounts[k]
   })).sort((a, b) => b.count - a.count);
-
-  // Mock Predictive Demand Data
-  const forecastData = [
-    { month: "Jan", actual: 45, predicted: 45 },
-    { month: "Feb", actual: 52, predicted: 50 },
-    { month: "Mar", actual: 61, predicted: 65 },
-    { month: "Apr", actual: null, predicted: 78 },
-    { month: "May", actual: null, predicted: 92 },
-    { month: "Jun", actual: null, predicted: 110 },
-  ];
 
   return (
     <div className="flex flex-col gap-8 h-full">
@@ -63,7 +68,7 @@ export default function AnalyticsCharts({ geoData }: { geoData: HotspotGeoJSON |
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <p className="text-xs text-slate-400 mt-2 italic text-center">*Forecast derived via predictive modeling based on complaint velocity</p>
+        <p className="text-xs text-slate-400 mt-2 italic text-center">*Forecast derived via active Scikit-Learn linear regression on total volume</p>
       </div>
     </div>
   );

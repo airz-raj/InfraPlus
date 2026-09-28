@@ -85,3 +85,11 @@ export async function getHotspots(
 
   return response.json();
 }
+
+export async function getPredictiveDemand(): Promise<any> {
+  const response = await fetch(`${API_BASE_URL}/analytics/predictive-demand`);
+  if (!response.ok) {
+    await readApiError(response, `Failed to fetch predictive demand (${response.status})`);
+  }
+  return response.json();
+}

@@ -87,6 +87,12 @@ async def on_startup() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     logger.info("Database tables ensured.")
+    
+    try:
+        from seed import seed_database
+        await seed_database()
+    except Exception as e:
+        logger.error(f"Failed to seed database: {e}")
 
 
 @app.on_event("shutdown")
