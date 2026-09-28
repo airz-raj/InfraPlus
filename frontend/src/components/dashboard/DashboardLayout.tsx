@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { LayoutDashboard } from "lucide-react";
 import { getHotspots } from "@/lib/api";
 import { HotspotGeoJSON } from "@/types/api";
 import dynamic from "next/dynamic";
