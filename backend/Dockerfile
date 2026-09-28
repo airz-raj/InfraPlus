@@ -2,8 +2,8 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies for audio processing and C++ bindings (if compiled later)
-RUN apt-get update && apt-get install -y ffmpeg build-essential cmake && rm -rf /var/lib/apt/lists/*
+# Only ffmpeg needed — we use Gemini API instead of compiled C++ bindings
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
