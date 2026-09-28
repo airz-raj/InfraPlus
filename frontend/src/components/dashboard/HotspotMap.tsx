@@ -67,9 +67,12 @@ export default function HotspotMap({ data }: { data: HotspotGeoJSON }) {
     mapRef.current = map;
 
     // Force Leaflet to recalculate tile positions after layout settles
-    setTimeout(() => map.invalidateSize(), 200);
+    const timer = setTimeout(() => {
+      if (mapRef.current) mapRef.current.invalidateSize();
+    }, 250);
 
     return () => {
+      clearTimeout(timer);
       map.remove();
       mapRef.current = null;
     };
