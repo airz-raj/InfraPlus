@@ -9,8 +9,8 @@ export async function processCitizenFeedback(text: string) {
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    console.warn("No GEMINI_API_KEY provided, returning mock processing.");
-    return aiResult;
+    console.warn("No GEMINI_API_KEY provided, using local regex/fuzzy processing.");
+    return fallbackRegexProcessor(text);
   }
 
   try {
@@ -37,6 +37,33 @@ export async function processCitizenFeedback(text: string) {
     return { ...aiResult, ...parsed };
   } catch (err) {
     console.error("Gemini API error", err);
-    return aiResult;
+    return fallbackRegexProcessor(text);
   }
+}
+
+function fallbackRegexProcessor(text: string) {
+  const lower = text.toLowerCase();
+  
+  let category = "unknown";
+  if (/(water|pipe|leak|pump|dry|drain|sewage|sanitation)/.test(lower)) category = "water";
+  else if (/(power|electricity|light|wire|pole|current|blackout|outage)/.test(lower)) category = "electricity";
+  else if (/(road|pothole|street|highway|bridge|asphalt|traffic)/.test(lower)) category = "roads";
+  else if (/(bus|train|metro|transport|station)/.test(lower)) category = "transport";
+  
+  if (category === "unknown" && /(trash|garbage|waste|clean)/.test(lower)) category = "sanitation";
+
+  let severity = 1;
+  if (/(emergency|massive|huge|critical|danger|accident|death|dying|crash)/.test(lower)) severity = 5;
+  else if (/(major|bad|terrible|days|broken|stopped|blocked)/.test(lower)) severity = 4;
+  else if (/(issue|problem|need|repair|fix)/.test(lower)) severity = 3;
+  else if (/(minor|small|slight)/.test(lower)) severity = 2;
+
+  let intent = text.slice(0, 30).trim();
+  if (text.length > 30) intent += "...";
+
+  return {
+    intent,
+    category,
+    severity,
+  };
 }
