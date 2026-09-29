@@ -1,2 +1,4 @@
 agent*.md
 next_phase.md
+.vercel
+.env*
