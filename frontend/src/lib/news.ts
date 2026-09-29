@@ -62,7 +62,7 @@ const NEWS: NewsItem[] = [
   },
   {
     id: "pt-transit",
-    locale: "pt",
+    locale: "bn",
     title: "Obras em corredor de ônibus após relatos de buracos",
     summary:
       "A prefeitura priorizou o recapeamento onde a densidade de reclamações cidadãs mais cresceu neste trimestre.",
@@ -74,7 +74,7 @@ const NEWS: NewsItem[] = [
   },
   {
     id: "pt-power",
-    locale: "pt",
+    locale: "mr",
     title: "Reforço da rede reduz apagões no fim da tarde",
     summary:
       "Investimento em transformadores locais segue o mapa de demanda gerado pelos relatos de voz e texto.",
