@@ -7,6 +7,9 @@ export type Interaction = {
   status: string;
   lng: number;
   lat: number;
+  location?: string;
+  urgency?: string;
+  tags?: string[];
 };
 
 export type Project = {
@@ -78,6 +81,9 @@ class DataStore {
       status: data.status || "PENDING",
       lng: data.lng || 0,
       lat: data.lat || 0,
+      location: data.location,
+      urgency: data.urgency,
+      tags: data.tags,
     };
     this.interactions.push(item);
     return item;

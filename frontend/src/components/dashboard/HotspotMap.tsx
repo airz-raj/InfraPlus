@@ -32,8 +32,9 @@ export default function HotspotMap({ data }: { data: HotspotGeoJSON }) {
       zoomControl: false,
     });
 
-    L.tileLayer("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png", {
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      className: "osm-dark-map",
     }).addTo(map);
 
     // Add all features

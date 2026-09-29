@@ -12,6 +12,9 @@ export interface FeedbackResponse {
   severity: number;
   status: string;
   raw_intent?: string;
+  location?: string;
+  urgency?: string;
+  tags?: string[];
   created_at: string;
 }
 

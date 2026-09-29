@@ -65,10 +65,16 @@ export function CitizenPortal() {
       response.status.toUpperCase().includes("REVIEW")
         ? ` ${t("reviewRequired")}`
         : "";
+        
+    let extraData = "";
+    if (response.location || response.urgency || (response.tags && response.tags.length > 0)) {
+      extraData = `\n\n📌 Extracted Context:\n📍 Location: ${response.location || "Unspecified"}\n🚨 Urgency: ${response.urgency || "Standard"}\n🏷️ Tags: ${(response.tags || []).join(", ")}`;
+    }
+
     push({
       role: "assistant",
       kind: "success",
-      text: `${t("successTitle")}. ${body}${review}`,
+      text: `${t("successTitle")}. ${body}${review}${extraData}`,
     });
   };
 
@@ -205,7 +211,7 @@ export function CitizenPortal() {
                     <p className={cn("mb-1 text-[11px] font-bold uppercase tracking-wider", isUser ? "text-blue-100/70" : "text-indigo-200/70")}>
                       {isUser ? t("you") : t("assistant")}
                     </p>
-                    <p className="font-medium tracking-tight drop-shadow-sm">{text}</p>
+                    <p className="font-medium tracking-tight drop-shadow-sm whitespace-pre-wrap">{text}</p>
                   </div>
                 </article>
               );
